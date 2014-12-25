@@ -75,6 +75,22 @@ class CreateTableController():
             else:
                 index_def_map = {}
 
+            # parse table indexed field list
+            gsi_defs_json = body.pop(
+                parser.Props.GLOBAL_SECONDARY_INDEXES, None
+            )
+
+            if gsi_defs_json:
+                validation.validate_list_of_objects(
+                    gsi_defs_json, parser.Props.GLOBAL_SECONDARY_INDEXES
+                )
+
+                index_def_map = parser.Parser.parse_global_secondary_indexes(
+                    gsi_defs_json
+                )
+            else:
+                index_def_map = {}
+
             validation.validate_unexpected_props(body, "body")
         # prepare table_schema structure
         table_schema = models.TableSchema(

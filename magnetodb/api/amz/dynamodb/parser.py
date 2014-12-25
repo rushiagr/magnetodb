@@ -475,6 +475,18 @@ class Parser():
         return res
 
     @classmethod
+    def parse_global_secondary_indexes(cls, global_secondary_index_list_json):
+        res = {}
+
+        for index_json in global_secondary_index_list_json:
+            index_name, index_def = (
+                cls.parse_global_secondary_index(index_json)
+            )
+            res[index_name] = index_def
+
+        return res
+
+    @classmethod
     def format_local_secondary_indexes(cls, hash_key,
                                        local_secondary_index_map):
         return [
